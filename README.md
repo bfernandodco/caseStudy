@@ -1,4 +1,5 @@
-# caseStudy
+# Estudo de Caso por FIAP ON - Graduação de Tecnologia em Análise e Desenvolvimento de Sistemas.
+#
 Este é o Estudo de caso proposto pela FIAP na graduação de Análise e Desenvolvimento de Sistemas.
 O desafio têm como propósito a criação de um software que gerencie um estoque, utilizando os seguintes frameworks, ferramentas e conectores:
   1.  MVC
