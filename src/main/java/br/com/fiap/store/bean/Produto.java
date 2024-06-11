@@ -65,4 +65,17 @@ public class Produto {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
+
+	@Override
+	public String toString() {
+		return "Produto: " + nome
+				+ "\nValor: R$ " + valor 
+				+ "\nData de Fabricação: " 
+					+ dataDeFabricacao.getDayOfMonth() + "/" 
+					+ dataDeFabricacao.getMonthValue() + "/" 
+					+ dataDeFabricacao.getYear()
+				+ "\nQuantidade: " + quantidade;
+	}
+	
+	
 }

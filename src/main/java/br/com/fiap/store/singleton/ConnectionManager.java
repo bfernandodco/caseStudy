@@ -16,7 +16,7 @@ public class ConnectionManager implements OracleConnection {
 	}
 	
 	public static ConnectionManager getInstance() {
-		if(connectionManager.equals(null)) {
+		if(connectionManager == null) {
 			connectionManager = new ConnectionManager();
 		}
 		return connectionManager;

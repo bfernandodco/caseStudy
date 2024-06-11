@@ -14,7 +14,7 @@ import br.com.fiap.store.singleton.ConnectionManager;
 
 public class OracleProdutoDAO implements ProdutoDAO {
 
-	private Connection connection = ConnectionManager.getInstance().getConnection();
+	private Connection connection;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
@@ -23,9 +23,10 @@ public class OracleProdutoDAO implements ProdutoDAO {
 	public void cadastrarProduto(Produto produto) throws DatabaseException {
 		String sqlQuery = "INSERT INTO TB_PRODUTO"
 				+ "(cd_produto, nm_produto, qt_produto, vl_produto, dt_fabricacao)"
-				+ "VALUES(SQ_TB_PRODUTO.NEXTVAL,?, ?, ?, ?)";
+				+ "VALUES(SQ_TB_PRODUTO.NEXTVAL, ?, ?, ?, ?)";
 		
 		try {
+			connection = ConnectionManager.getInstance().getConnection();
 			pstmt = connection.prepareStatement(sqlQuery);
 			pstmt.setString(1, produto.getNome());
 			pstmt.setInt(2, produto.getQuantidade());
@@ -48,16 +49,18 @@ public class OracleProdutoDAO implements ProdutoDAO {
 
 	@Override
 	public void atualizarProduto(Produto produto) throws DatabaseException {
-		String sqlQuery = "UPDATE TD_PRODUTO SET "
-				+ "nm_produto = ?, qt_produto = ?, vl_produto = ?, dt_produto = ? "
+		String sqlQuery = "UPDATE TB_PRODUTO SET "
+				+ "nm_produto = ?, qt_produto = ?, vl_produto = ?, dt_fabricacao = ? "
 				+ "WHERE cd_produto = ?";
 		
 		try {
+			connection = ConnectionManager.getInstance().getConnection();
 			pstmt = connection.prepareStatement(sqlQuery);
 			pstmt.setString(1, produto.getNome());
 			pstmt.setInt(2,produto.getQuantidade());
 			pstmt.setDouble(3, produto.getValor());
 			pstmt.setDate(4, java.sql.Date.valueOf(produto.getDataDeFabricacao()));
+			pstmt.setInt(5, produto.getCodigo());
 			pstmt.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -78,6 +81,7 @@ public class OracleProdutoDAO implements ProdutoDAO {
 		String sqlQuery = "DELETE FROM TB_PRODUTO WHERE cd_produto = ?";
 		
 		try {
+			connection = ConnectionManager.getInstance().getConnection();
 			pstmt = connection.prepareStatement(sqlQuery);
 			pstmt.setInt(1, codigoDoProduto);
 			pstmt.executeUpdate();
@@ -98,15 +102,17 @@ public class OracleProdutoDAO implements ProdutoDAO {
 
 	@Override
 	public Produto buscarProduto(Integer idDoProduto) {
-		String sqlQuery = "SELECT * FROM TB_PRODUTO WHERE idDoProduto = ?";
+		String sqlQuery = "SELECT * FROM TB_PRODUTO WHERE cd_Produto = ?";
 		
 		try {
-			Produto produto = new Produto();
+			connection = ConnectionManager.getInstance().getConnection();
 			pstmt = connection.prepareStatement(sqlQuery);
 			pstmt.setInt(1, idDoProduto);
 			rs = pstmt.executeQuery();
+			Produto produto = new Produto();
 			
 			if(rs.next()) {
+				
 				produto.setCodigo(rs.getInt("cd_produto"));
 				produto.setNome(rs.getString("nm_produto"));
 				produto.setQuantidade(rs.getInt("vl_produto"));
@@ -137,6 +143,7 @@ public class OracleProdutoDAO implements ProdutoDAO {
 		Produto produto = new Produto();
 		
 		try {
+			connection = ConnectionManager.getInstance().getConnection();
 			pstmt = connection.prepareStatement(sqlQuery);
 			rs = pstmt.executeQuery();
 			
@@ -151,7 +158,7 @@ public class OracleProdutoDAO implements ProdutoDAO {
 			
 			return produtos;
 		} catch(SQLException e) {
-			System.err.println("ERRO AO LISTAR PRODUITO EM OracleProdutoDAO.listarProduto()");
+			System.err.println("Erro ao listar produtos em OracleProdutoDAO.listarProduto()");
 			e.printStackTrace();
 			return null;
 		} finally {
