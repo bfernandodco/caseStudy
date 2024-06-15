@@ -33,11 +33,10 @@ public class ProdutoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String nome = request.getParameter("nome");
-			Integer quantidade = Integer.parseInt("quantidade");
-			Double preco = Double.parseDouble("preco");
+			Integer quantidade = Integer.parseInt(request.getParameter("quantidade"));
+			Double valor = Double.parseDouble(request.getParameter("valor"));
 			LocalDate fabricacao = LocalDate.parse(request.getParameter("fabricacao"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			
-			Produto produto = new Produto(0, nome, preco, fabricacao, quantidade);
+			Produto produto = new Produto(2, nome, valor, fabricacao, quantidade);
 			produtoDAO.cadastrarProduto(produto);
 			
 			request.setAttribute("message", "Produto cadastrado com sucesso!");
@@ -50,5 +49,5 @@ public class ProdutoServlet extends HttpServlet {
 		}
 		request.getRequestDispatcher("cadastro-de-produto.jsp").forward(request, response);
 	}
-	
+
 }

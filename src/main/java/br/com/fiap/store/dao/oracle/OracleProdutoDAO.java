@@ -18,7 +18,6 @@ public class OracleProdutoDAO implements ProdutoDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	
 	@Override
 	public void cadastrarProduto(Produto produto) throws DatabaseException {
 		String sqlQuery = "INSERT INTO TB_PRODUTO"

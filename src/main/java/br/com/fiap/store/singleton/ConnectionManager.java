@@ -24,11 +24,15 @@ public class ConnectionManager implements OracleConnection {
 	
 	public Connection getConnection() {
 		try {
+			
 			connection = DriverManager.getConnection(URL, USER, PASSWORD);
+			System.out.println("Conectado ao Oracle DB com sucesso!");
 			return connection;
 		} catch(SQLException e) {
 			System.err.println("Erro ao conectar no Oracle DB.");
 			e.printStackTrace();
+			return null;
+		} catch(Exception e) {
 			return null;
 		}
 	}
